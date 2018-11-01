@@ -111,10 +111,6 @@ namespace QuantConnect.Algorithm.Framework.Alphas
         {
             foreach (var added in changes.AddedSecurities)
             {
-                if (_symbolData.ContainsKey(added.Symbol))
-                {
-                    continue;
-                }
                 _symbolData.Add(added.Symbol, new SymbolData(algorithm, added, _fastPeriod, _slowPeriod, _signalPeriod, _movingAverageType, _resolution));
             }
 
@@ -125,6 +121,7 @@ namespace QuantConnect.Algorithm.Framework.Alphas
                 {
                     // clean up our consolidator
                     algorithm.SubscriptionManager.RemoveConsolidator(data.Security.Symbol, data.Consolidator);
+                    _symbolData.Remove(removed.Symbol);
                 }
             }
         }
